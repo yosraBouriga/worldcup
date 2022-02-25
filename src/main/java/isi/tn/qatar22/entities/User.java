@@ -1,12 +1,14 @@
 package isi.tn.qatar22.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 
 @Entity
 public class User implements Serializable {
@@ -20,6 +22,9 @@ public class User implements Serializable {
 	private String fname;
 	private String lname;
 
+	public User() {
+		super();
+	}
 	public User(Long id, String email, String pwd, String fname, String lname) {
 		super();
 		this.id = id;
@@ -67,5 +72,10 @@ public class User implements Serializable {
 
 	public void setLname(String lname) {
 		this.lname = lname;
+	}
+
+	public Object getProject() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
