@@ -21,7 +21,7 @@ import isi.tn.qatar22.entities.User;
 import isi.tn.qatar22.services.IUserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200") // api sera consommée par Angular
+@CrossOrigin(origins = "*") // api sera consommée par Angular
 @RequestMapping("/api")
 public class UserController {
 	@Autowired

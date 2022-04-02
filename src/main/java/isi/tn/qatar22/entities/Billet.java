@@ -25,6 +25,10 @@ public class Billet implements Serializable {
 		this.prix = prix;
 		
 	}
+	
+	public Billet() {
+		super();
+	}
 	public String getDate() {
 		return date;
 	}

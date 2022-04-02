@@ -74,8 +74,4 @@ public class User implements Serializable {
 		this.lname = lname;
 	}
 
-	public Object getProject() {
-		// TODO Auto-generated method stub
-		return null;
 	}
-}

@@ -17,15 +17,63 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isi.tn.qatar22.entities.Billet;
-import isi.tn.qatar22.entities.User;
 import isi.tn.qatar22.services.IBilletService;
-import isi.tn.qatar22.services.IPartieService;
+import isi.tn.qatar22.services.ImpBilletService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*") // api sera consommée par Angular
 @RequestMapping("/api")
 public class BilletController {
-	@Autowired(required = true)
-	IBilletService bserv;
+
+	@Autowired
+	ImpBilletService pserv;
+	
+	@PostMapping("/addbillet")
+	public Billet createBillet(@Validated @RequestBody Billet billet) {
+		return pserv.saveBillet(billet);
+		
+																	  }
+				
+	@GetMapping("/billet/{id}")
+	public Optional<Billet> getBilletById(@PathVariable(value = "id") Long Id) {
+			return pserv.findById(Id);
+			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", Id));
+		}
+
+		@GetMapping("/billet")
+		public List<Billet> getAllBillets() {
+			List<Billet> pro = pserv.findAllBillets();
+			return pro;
+
+		}
+
+		@DeleteMapping("/billet/{id}")
+		public ResponseEntity<?> deleteBillet(@PathVariable(value = "id") Long billetId) {
+			Billet billet = pserv.findById(billetId).orElseThrow(null);
+			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", partieId));
+
+			// partieRepository.deleteById(partieId);
+			pserv.delete(billet);
+
+			return ResponseEntity.ok().build();
+		}
+		
+		@PutMapping("/billet/{id}")
+		public Billet updateBillet(@PathVariable(value = "id") Long Id,
+		                                        @Validated @RequestBody Billet billetDetails) {
+
+			Billet billet = this.pserv.findById(Id).orElseThrow(null);
+		    
+		   
+			billet.setDate(billetDetails.getDate());
+			billet.setPlace(billetDetails.getPlace());
+			billet.setPrix(billetDetails.getPrix());
+		 
+		   
+
+		    Billet updatedBillet = pserv.saveBillet(billet);
+		    return updatedBillet;
+		
+																							}
 
 }
