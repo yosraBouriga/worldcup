@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isi.tn.qatar22.entities.Billet;
-import isi.tn.qatar22.services.IBilletService;
 import isi.tn.qatar22.services.ImpBilletService;
 
 @RestController

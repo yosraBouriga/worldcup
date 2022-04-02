@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import isi.tn.qatar22.entities.Partie;
-import isi.tn.qatar22.entities.User;
+
 
 public interface PartieService {
 

@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isi.tn.qatar22.entities.Billet;
-import isi.tn.qatar22.entities.User;
 import isi.tn.qatar22.repositories.BilletRepository;
-import isi.tn.qatar22.repositories.userRepository;
+
 
 @Service
 public class ImpBilletService implements IBilletService {

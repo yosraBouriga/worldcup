@@ -1,7 +1,6 @@
 package isi.tn.qatar22.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +12,10 @@ import javax.persistence.OneToMany;
 @Entity
 public class Partie implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id // clé primaire
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // ça sera généré automatiquement
 	@Column(name = "idPartie") // esm lcolonne idPartie

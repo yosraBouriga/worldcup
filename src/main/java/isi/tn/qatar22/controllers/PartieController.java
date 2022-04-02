@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isi.tn.qatar22.entities.Partie;
-import isi.tn.qatar22.services.PartieService;
 import isi.tn.qatar22.services.PartieServiceImp;
 
 @RestController

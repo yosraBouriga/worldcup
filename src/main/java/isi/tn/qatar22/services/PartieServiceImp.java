@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isi.tn.qatar22.entities.Partie;
-import isi.tn.qatar22.entities.User;
 import isi.tn.qatar22.repositories.PartieRepository;
 
 @Service

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import isi.tn.qatar22.entities.User;
 import isi.tn.qatar22.repositories.userRepository;
-import isi.tn.qatar22.services.IUserService;
+
 
 @Service
 public class ImpUserService implements IUserService {
