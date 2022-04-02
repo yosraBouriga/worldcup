@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -15,19 +16,22 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id // clé primaire
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // ça sera généré automatiquement
-	@Column(name = "userid") // esm lcolonne userid
-	private Long id;
+	@Column(name = "idUser") // esm lcolonne userid
+	private Long idUser;
 	private String email;
 	private String pwd;
 	private String fname;
 	private String lname;
+	@OneToMany (mappedBy="user")
+	private List<Billet> billets;
+	
 
 	public User() {
 		super();
 	}
 	public User(Long id, String email, String pwd, String fname, String lname) {
 		super();
-		this.id = id;
+		this.idUser = id;
 		this.email = email;
 		this.pwd = pwd;
 		this.fname = fname;
@@ -35,12 +39,10 @@ public class User implements Serializable {
 	}
 
 	public Long getId() {
-		return id;
+		return idUser;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 
 	public String getEmail() {
 		return email;

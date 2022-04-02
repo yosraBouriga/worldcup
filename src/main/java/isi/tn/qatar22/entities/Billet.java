@@ -7,19 +7,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 @Entity
 public class Billet implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)   
-	@Column(name="idbillet")  
-	private Long id;
+	@Column(name="idBillet")  
+	private Long idBillet;
 	private String date;
 	private String place;
 	private String prix;
+	@ManyToOne
+    @JoinColumn(name = "idUser")
+    private User user;
+	@ManyToOne
+	    @JoinColumn(name = "idPartie")
+	    private Partie partie;
 	public Billet(Long id, String date, String place, String prix) {
 		super();
-		this.id = id;
+		this.idBillet = id;
 		this.date = date;
 		this.place = place;
 		this.prix = prix;
