@@ -34,6 +34,30 @@ public class Billet implements Serializable {
 		
 	}
 	
+	public Long getIdBillet() {
+		return idBillet;
+	}
+
+	public void setIdBillet(Long idBillet) {
+		this.idBillet = idBillet;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Partie getPartie() {
+		return partie;
+	}
+
+	public void setPartie(Partie partie) {
+		this.partie = partie;
+	}
+
 	public Billet() {
 		super();
 	}

@@ -3,7 +3,6 @@ package isi.tn.qatar22.controllers;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,17 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.validation.annotation.Validated;
 
 import isi.tn.qatar22.entities.User;
+import isi.tn.qatar22.reponses.MessageResponse;
 import isi.tn.qatar22.services.IUserService;
+import isi.tn.qatar22.services.ImpUserService;
 
 @RestController
 @CrossOrigin(origins = "*") // api sera consommée par Angular
 @RequestMapping("/api")
 public class UserController {
 	@Autowired
-	IUserService userv;
+	ImpUserService userv;
 
 	@PostMapping("/addusert")
-	public User createUser(@Validated @RequestBody User user) {
+	public MessageResponse createUser(@Validated @RequestBody User user) {
 		return userv.saveUser(user);
 	}
 
@@ -46,28 +47,23 @@ public class UserController {
 	}
 
 	@DeleteMapping("/user/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) {
-		User user = userv.findById(userId).orElseThrow(null);
-		// .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+	public MessageResponse deleteUser(@PathVariable(value = "id") Long userId) {
 
-		// userRepository.deleteById(userId);
-		userv.delete(user);
+		return userv.delete(userId);
 
-		return ResponseEntity.ok().build();
 	}
+
 	@PutMapping("/user/{id}")
-	public User updateUser(@PathVariable(value = "id") Long Id,
-	                                        @Validated @RequestBody User userDetails) {
+	public MessageResponse updateUser(@PathVariable(value = "id") Long Id, @Validated @RequestBody User userDetails) {
 
-	    User user = userv.findById(Id).orElseThrow(null);
-	    
-	   
-	    user.setEmail(userDetails.getEmail());
-	    user.setPwd(userDetails.getPwd());
-	    user.setFname(userDetails.getFname());
-	    user.setLname(userDetails.getLname());
+		User user = userv.findById(Id).orElseThrow(null);
 
-	    User updatedUser = userv.saveUser(user);
-	    return updatedUser;
+		user.setEmail(userDetails.getEmail());
+		user.setPwd(userDetails.getPwd());
+		user.setFname(userDetails.getFname());
+		user.setLname(userDetails.getLname());
+
+		MessageResponse updatedUser = userv.saveUser(user);
+		return updatedUser;
 	}
 }

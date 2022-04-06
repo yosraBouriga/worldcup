@@ -27,6 +27,18 @@ public class Partie implements Serializable {
 	@OneToMany (mappedBy="partie")
 	private List<Billet> billets;
 	
+	public Long getIdPartie() {
+		return idPartie;
+	}
+	public void setIdPartie(Long idPartie) {
+		this.idPartie = idPartie;
+	}
+	public List<Billet> getBillets() {
+		return billets;
+	}
+	public void setBillets(List<Billet> billets) {
+		this.billets = billets;
+	}
 	public String getEquipe1() {
 		return equipe1;
 	}

@@ -26,6 +26,18 @@ public class User implements Serializable {
 	private List<Billet> billets;
 	
 
+	public Long getIdUser() {
+		return idUser;
+	}
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
+	public List<Billet> getBillets() {
+		return billets;
+	}
+	public void setBillets(List<Billet> billets) {
+		this.billets = billets;
+	}
 	public User() {
 		super();
 	}
