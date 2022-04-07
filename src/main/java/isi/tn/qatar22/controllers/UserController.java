@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.validation.annotation.Validated;
 
-import isi.tn.qatar22.entities.User;
+import isi.tn.qatar22.models.User;
 import isi.tn.qatar22.reponses.MessageResponse;
-import isi.tn.qatar22.services.IUserService;
 import isi.tn.qatar22.services.ImpUserService;
 
 @RestController
@@ -29,7 +27,7 @@ public class UserController {
 	ImpUserService userv;
 
 	@PostMapping("/addusert")
-	public MessageResponse createUser(@Validated @RequestBody User user) {
+	public User createUser(@Validated @RequestBody User user) {
 		return userv.saveUser(user);
 	}
 
@@ -54,16 +52,17 @@ public class UserController {
 	}
 
 	@PutMapping("/user/{id}")
-	public MessageResponse updateUser(@PathVariable(value = "id") Long Id, @Validated @RequestBody User userDetails) {
+	public User updateUser(@PathVariable(value = "id") Long Id, @Validated @RequestBody User userDetails) {
 
 		User user = userv.findById(Id).orElseThrow(null);
 
+		user.setUsername(userDetails.getUsername());
 		user.setEmail(userDetails.getEmail());
-		user.setPwd(userDetails.getPwd());
-		user.setFname(userDetails.getFname());
-		user.setLname(userDetails.getLname());
+		user.setPassword(userDetails.getPassword());
+		user.setRoles(userDetails.getRoles());
+	
 
-		MessageResponse updatedUser = userv.saveUser(user);
+		User updatedUser = userv.saveUser(user);
 		return updatedUser;
 	}
 }

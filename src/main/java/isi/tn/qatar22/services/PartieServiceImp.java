@@ -5,19 +5,23 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import isi.tn.qatar22.entities.Partie;
+import isi.tn.qatar22.models.Billet;
+import isi.tn.qatar22.models.Partie;
+import isi.tn.qatar22.reponses.MessageResponse;
 import isi.tn.qatar22.repositories.PartieRepository;
 
 @Service
-public class PartieServiceImp implements PartieService{
+public class PartieServiceImp implements PartieService {
 	@Autowired
 	PartieRepository prepos;
-	
+
 	@Override
-	public Partie savePartie(Partie partie) {
+	public MessageResponse savePartie(Partie partie) {
 		// TODO Auto-generated method stub
-		return prepos.save(partie);
+		prepos.save(partie);
+		return new MessageResponse(true, "Succès", "Opération réalisée avec succès.");
 	}
 
 	@Override
@@ -32,14 +36,26 @@ public class PartieServiceImp implements PartieService{
 		return (List<Partie>) this.prepos.findAll();
 	}
 
+	@Transactional
 	@Override
-	public void delete(Partie partie) {
-		// TODO Auto-generated method stub
-		this.prepos.delete(partie);
+	public MessageResponse delete(Long id) {
+		try {
+			Partie partie = findById(id).get();
 
-		
+			prepos.deleteById(id);
+			return new MessageResponse(true, "Succès", "L'enregistrement à été supprimé avec succès.");
+		} catch (Exception e) {
+			return new MessageResponse(false, "Echec", "Cet enregistrement n'existe pas !");
+
+		}
+
+		/*
+		 * @Override public void delete(Partie partie) { // TODO Auto-generated method
+		 * stub this.prepos.delete(partie);
+		 * 
+		 * 
+		 * }
+		 */
+
 	}
-
-	
-
 }

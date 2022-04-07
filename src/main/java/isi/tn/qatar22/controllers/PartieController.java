@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isi.tn.qatar22.entities.Partie;
+import isi.tn.qatar22.models.Partie;
+import isi.tn.qatar22.reponses.MessageResponse;
 import isi.tn.qatar22.services.PartieServiceImp;
 
 @RestController
@@ -26,53 +27,53 @@ public class PartieController {
 
 	@Autowired
 	PartieServiceImp pserv;
-	
+
 	@PostMapping("/addmatch")
-	public Partie createPartie(@Validated @RequestBody Partie partie) {
+	public MessageResponse createPartie(@Validated @RequestBody Partie partie) {
 		return pserv.savePartie(partie);
 		
-																	  }
-				
+	}
+
 	@GetMapping("/partie/{id}")
 	public Optional<Partie> getPartieById(@PathVariable(value = "id") Long Id) {
-			return pserv.findById(Id);
-			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", Id));
-		}
+		return pserv.findById(Id);
+	}
 
-		@GetMapping("/parties")
-		public List<Partie> getAllparties() {
-			List<Partie> pro = pserv.findAllParties();
-			return pro;
+	@GetMapping("/parties")
+	public List<Partie> getAllparties() {
+		List<Partie> pro = pserv.findAllParties();
+		return pro;
 
-		}
+	}
 
-		@DeleteMapping("/partie/{id}")
-		public ResponseEntity<?> deletePartie(@PathVariable(value = "id") Long partieId) {
-			Partie partie = pserv.findById(partieId).orElseThrow(null);
-			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", partieId));
+	/*@DeleteMapping("/partie/{id}")
+	public ResponseEntity<?> deletePartie(@PathVariable(value = "id") Long partieId) {
+		Partie partie = pserv.findById(partieId).orElseThrow(null);
 
-			// partieRepository.deleteById(partieId);
-			pserv.delete(partie);
+		pserv.delete(partie);
 
-			return ResponseEntity.ok().build();
-		}
-		
-		@PutMapping("/partie/{id}")
-		public Partie updatePartie(@PathVariable(value = "id") Long Id,
-		                                        @Validated @RequestBody Partie partieDetails) {
+		return ResponseEntity.ok().build();
+	}*/
+	@DeleteMapping("/partie/{id}")
+	public MessageResponse deletePartie(@PathVariable(value = "id") Long idPartie) {
 
-		    Partie partie = this.pserv.findById(Id).orElseThrow(null);
-		    
-		   
-		    partie.setDate(partieDetails.getDate());
-		    partie.setEquipe1(partieDetails.getEquipe1());
-		    partie.setEquipe2(partieDetails.getEquipe2());
-		    partie.setNomStade(partieDetails.getNomStade());
-		   
+		return pserv.delete(idPartie);
 
-		    Partie updatedPartie = pserv.savePartie(partie);
-		    return updatedPartie;
-		
-																							}
+	}
+
+	@PutMapping("/partie/{id}")
+	public MessageResponse updatePartie(@PathVariable(value = "id") Long Id, @Validated @RequestBody Partie partieDetails) {
+
+		Partie partie = this.pserv.findById(Id).orElseThrow(null);
+
+		partie.setDate(partieDetails.getDate());
+		partie.setEquipe1(partieDetails.getEquipe1());
+		partie.setEquipe2(partieDetails.getEquipe2());
+		partie.setNomStade(partieDetails.getNomStade());
+
+		MessageResponse updatedPartie = pserv.savePartie(partie);
+		return updatedPartie;
+
+	}
 
 }

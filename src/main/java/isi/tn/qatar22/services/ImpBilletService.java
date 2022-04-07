@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import isi.tn.qatar22.entities.Billet;
+import isi.tn.qatar22.models.Billet;
+import isi.tn.qatar22.reponses.MessageResponse;
 import isi.tn.qatar22.repositories.BilletRepository;
 
 
@@ -14,11 +16,30 @@ import isi.tn.qatar22.repositories.BilletRepository;
 public class ImpBilletService implements IBilletService {
 	@Autowired
 	BilletRepository brepos;
-
+	
+	@Transactional
 	@Override
-	public Billet saveBillet(Billet billet) {
+	public MessageResponse saveBillet(Billet billet) {
 		// TODO Auto-generated method stub
-		return brepos.save(billet);
+		brepos.save(billet);
+		return new MessageResponse(true, "Succès", "Opération réalisée avec succès.");
+	}
+	
+	@Transactional
+	@Override
+	public MessageResponse delete(Long id) {
+		try {
+		Billet billet = findById(id).get();
+		
+		
+			brepos.deleteById(id);
+			return new MessageResponse(true, "Succès", "L'enregistrement à été supprimé avec succès.");
+		}
+		catch(Exception e ) {
+			return new MessageResponse(false, "Echec", "Cet enregistrement n'existe pas !");
+
+		}
+		
 	}
 
 	@Override
@@ -33,9 +54,9 @@ public class ImpBilletService implements IBilletService {
 		return (List<Billet>) brepos.findAll();
 	}
 
-	@Override
-	public void delete(Billet billet) {
+	/*@Override
+	public void delete(Long idBillet) {
 		// TODO Auto-generated method stub
-		brepos.delete(billet);
-	}
+		brepos.delete(idBillet);
+	}*/
 }

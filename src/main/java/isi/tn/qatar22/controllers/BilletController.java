@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isi.tn.qatar22.entities.Billet;
+import isi.tn.qatar22.models.Billet;
+import isi.tn.qatar22.reponses.MessageResponse;
 import isi.tn.qatar22.services.ImpBilletService;
 
 @RestController
@@ -25,28 +26,28 @@ import isi.tn.qatar22.services.ImpBilletService;
 public class BilletController {
 
 	@Autowired
-	ImpBilletService pserv;
+	ImpBilletService bserv;
 	
 	@PostMapping("/addbillet")
-	public Billet createBillet(@Validated @RequestBody Billet billet) {
-		return pserv.saveBillet(billet);
+	public MessageResponse createBillet(@Validated @RequestBody Billet billet) {
+		return bserv.saveBillet(billet);
 		
 																	  }
 				
 	@GetMapping("/billet/{id}")
 	public Optional<Billet> getBilletById(@PathVariable(value = "id") Long Id) {
-			return pserv.findById(Id);
+			return bserv.findById(Id);
 			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", Id));
 		}
 
 		@GetMapping("/billet")
 		public List<Billet> getAllBillets() {
-			List<Billet> pro = pserv.findAllBillets();
+			List<Billet> pro = bserv.findAllBillets();
 			return pro;
 
 		}
 
-		@DeleteMapping("/billet/{id}")
+		/*@DeleteMapping("/billet/{id}")
 		public ResponseEntity<?> deleteBillet(@PathVariable(value = "id") Long billetId) {
 			Billet billet = pserv.findById(billetId).orElseThrow(null);
 			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", partieId));
@@ -55,13 +56,19 @@ public class BilletController {
 			pserv.delete(billet);
 
 			return ResponseEntity.ok().build();
+		}*/
+		@DeleteMapping("/billet/{id}")
+		public MessageResponse deleteBillet(@PathVariable(value = "id") Long idBillet) {
+
+			return bserv.delete(idBillet);
+
 		}
 		
 		@PutMapping("/billet/{id}")
-		public Billet updateBillet(@PathVariable(value = "id") Long Id,
+		public MessageResponse updateBillet(@PathVariable(value = "id") Long Id,
 		                                        @Validated @RequestBody Billet billetDetails) {
 
-			Billet billet = this.pserv.findById(Id).orElseThrow(null);
+			Billet billet = this.bserv.findById(Id).orElseThrow(null);
 		    
 		   
 			billet.setDate(billetDetails.getDate());
@@ -70,7 +77,7 @@ public class BilletController {
 		 
 		   
 
-		    Billet updatedBillet = pserv.saveBillet(billet);
+		    MessageResponse updatedBillet = bserv.saveBillet(billet);
 		    return updatedBillet;
 		
 																							}

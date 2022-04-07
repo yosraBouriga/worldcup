@@ -1,4 +1,4 @@
-package isi.tn.qatar22.entities;
+package isi.tn.qatar22.models;
 
 import java.io.Serializable;
 import java.util.List;
