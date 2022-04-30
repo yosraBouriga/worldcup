@@ -34,14 +34,13 @@ public class UserController {
 	}
 
 	@GetMapping("/user/{id}")
-	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Optional<User> getUserById(@PathVariable(value = "id") Long Id) {
 		return userv.findById(Id);
-		// .orElseThrow(() -> new ResourceNotFoundException("User", "id", Id));
 	}
 
 	@GetMapping("/users")
-	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<User> getAllUsers() {
 		List<User> pro = userv.findAllUsers();
 		return pro;
@@ -66,7 +65,6 @@ public class UserController {
 		user.setEmail(userDetails.getEmail());
 		user.setPassword(userDetails.getPassword());
 		user.setRoles(userDetails.getRoles());
-	
 
 		User updatedUser = userv.saveUser(user);
 		return updatedUser;

@@ -30,7 +30,7 @@ public class BilletController {
 	ImpBilletService bserv;
 	
 	@PostMapping("/addbillet")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public MessageResponse createBillet(@Validated @RequestBody Billet billet) {
 		return bserv.saveBillet(billet);
 		
@@ -62,7 +62,7 @@ public class BilletController {
 			return ResponseEntity.ok().build();
 		}*/
 		@DeleteMapping("/billet/{id}")
-		@PreAuthorize("hasRole('ADMIN')")
+		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 		public MessageResponse deleteBillet(@PathVariable(value = "id") Long idBillet) {
 
 			return bserv.delete(idBillet);
@@ -70,7 +70,7 @@ public class BilletController {
 		}
 		
 		@PutMapping("/billet/{id}")
-		@PreAuthorize("hasRole('ADMIN')")
+		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 		public MessageResponse updateBillet(@PathVariable(value = "id") Long Id,
 		                                        @Validated @RequestBody Billet billetDetails) {
 

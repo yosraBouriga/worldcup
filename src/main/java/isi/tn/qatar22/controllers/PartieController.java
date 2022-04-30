@@ -30,7 +30,7 @@ public class PartieController {
 	PartieServiceImp pserv;
 
 	@PostMapping("/addmatch")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public MessageResponse createPartie(@Validated @RequestBody Partie partie) {
 		return pserv.savePartie(partie);
 		
@@ -59,7 +59,7 @@ public class PartieController {
 		return ResponseEntity.ok().build();
 	}*/
 	@DeleteMapping("/partie/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public MessageResponse deletePartie(@PathVariable(value = "id") Long idPartie) {
 
 		return pserv.delete(idPartie);
@@ -67,7 +67,7 @@ public class PartieController {
 	}
 
 	@PutMapping("/partie/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public MessageResponse updatePartie(@PathVariable(value = "id") Long Id, @Validated @RequestBody Partie partieDetails) {
 
 		Partie partie = this.pserv.findById(Id).orElseThrow(null);
