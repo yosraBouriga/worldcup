@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,20 +30,23 @@ public class BilletController {
 	ImpBilletService bserv;
 	
 	@PostMapping("/addbillet")
+	@PreAuthorize("hasRole('ADMIN')")
 	public MessageResponse createBillet(@Validated @RequestBody Billet billet) {
 		return bserv.saveBillet(billet);
 		
 																	  }
 				
 	@GetMapping("/billet/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public Optional<Billet> getBilletById(@PathVariable(value = "id") Long Id) {
 			return bserv.findById(Id);
 			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", Id));
 		}
 
-		@GetMapping("/billet")
-		public List<Billet> getAllBillets() {
-			List<Billet> pro = bserv.findAllBillets();
+	@GetMapping("/billet")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public List<Billet> getAllBillets() {
+		List<Billet> pro = bserv.findAllBillets();
 			return pro;
 
 		}
@@ -58,6 +62,7 @@ public class BilletController {
 			return ResponseEntity.ok().build();
 		}*/
 		@DeleteMapping("/billet/{id}")
+		@PreAuthorize("hasRole('ADMIN')")
 		public MessageResponse deleteBillet(@PathVariable(value = "id") Long idBillet) {
 
 			return bserv.delete(idBillet);
@@ -65,6 +70,7 @@ public class BilletController {
 		}
 		
 		@PutMapping("/billet/{id}")
+		@PreAuthorize("hasRole('ADMIN')")
 		public MessageResponse updateBillet(@PathVariable(value = "id") Long Id,
 		                                        @Validated @RequestBody Billet billetDetails) {
 

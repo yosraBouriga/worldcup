@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,17 +28,20 @@ public class UserController {
 	ImpUserService userv;
 
 	@PostMapping("/addusert")
+	@PreAuthorize("hasRole('ADMIN')")
 	public User createUser(@Validated @RequestBody User user) {
 		return userv.saveUser(user);
 	}
 
 	@GetMapping("/user/{id}")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public Optional<User> getUserById(@PathVariable(value = "id") Long Id) {
 		return userv.findById(Id);
 		// .orElseThrow(() -> new ResourceNotFoundException("User", "id", Id));
 	}
 
 	@GetMapping("/users")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public List<User> getAllUsers() {
 		List<User> pro = userv.findAllUsers();
 		return pro;
@@ -45,6 +49,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public MessageResponse deleteUser(@PathVariable(value = "id") Long userId) {
 
 		return userv.delete(userId);
@@ -52,6 +57,7 @@ public class UserController {
 	}
 
 	@PutMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public User updateUser(@PathVariable(value = "id") Long Id, @Validated @RequestBody User userDetails) {
 
 		User user = userv.findById(Id).orElseThrow(null);

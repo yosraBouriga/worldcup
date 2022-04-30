@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,17 +30,20 @@ public class PartieController {
 	PartieServiceImp pserv;
 
 	@PostMapping("/addmatch")
+	@PreAuthorize("hasRole('ADMIN')")
 	public MessageResponse createPartie(@Validated @RequestBody Partie partie) {
 		return pserv.savePartie(partie);
 		
 	}
 
 	@GetMapping("/partie/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public Optional<Partie> getPartieById(@PathVariable(value = "id") Long Id) {
 		return pserv.findById(Id);
 	}
 
 	@GetMapping("/parties")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public List<Partie> getAllparties() {
 		List<Partie> pro = pserv.findAllParties();
 		return pro;
@@ -55,6 +59,7 @@ public class PartieController {
 		return ResponseEntity.ok().build();
 	}*/
 	@DeleteMapping("/partie/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public MessageResponse deletePartie(@PathVariable(value = "id") Long idPartie) {
 
 		return pserv.delete(idPartie);
@@ -62,6 +67,7 @@ public class PartieController {
 	}
 
 	@PutMapping("/partie/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public MessageResponse updatePartie(@PathVariable(value = "id") Long Id, @Validated @RequestBody Partie partieDetails) {
 
 		Partie partie = this.pserv.findById(Id).orElseThrow(null);
