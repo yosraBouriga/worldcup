@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isi.tn.qatar22.models.Billet;
+import isi.tn.qatar22.models.User;
 import isi.tn.qatar22.reponses.MessageResponse;
 import isi.tn.qatar22.services.ImpBilletService;
+import isi.tn.qatar22.services.ImpUserService;
 
 @RestController
 @CrossOrigin(origins = "*") // api sera consommée par Angular
@@ -28,64 +30,74 @@ public class BilletController {
 
 	@Autowired
 	ImpBilletService bserv;
-	
+
+	@Autowired
+	ImpUserService userv;
+
 	@PostMapping("/addbillet")
 	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public MessageResponse createBillet(@Validated @RequestBody Billet billet) {
 		return bserv.saveBillet(billet);
-		
-																	  }
-				
+
+	}
+
 	@GetMapping("/billet/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public Optional<Billet> getBilletById(@PathVariable(value = "id") Long Id) {
-			return bserv.findById(Id);
-			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", Id));
-		}
+		return bserv.findById(Id);
+		// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", Id));
+	}
 
 	@GetMapping("/billet")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public List<Billet> getAllBillets() {
 		List<Billet> pro = bserv.findAllBillets();
-			return pro;
+		return pro;
 
-		}
+	}
 
-		/*@DeleteMapping("/billet/{id}")
-		public ResponseEntity<?> deleteBillet(@PathVariable(value = "id") Long billetId) {
-			Billet billet = pserv.findById(billetId).orElseThrow(null);
-			// .orElseThrow(() -> new ResourceNotFoundException("partie", "id", partieId));
+	/*
+	 * @DeleteMapping("/billet/{id}") public ResponseEntity<?>
+	 * deleteBillet(@PathVariable(value = "id") Long billetId) { Billet billet =
+	 * pserv.findById(billetId).orElseThrow(null); // .orElseThrow(() -> new
+	 * ResourceNotFoundException("partie", "id", partieId));
+	 * 
+	 * // partieRepository.deleteById(partieId); pserv.delete(billet);
+	 * 
+	 * return ResponseEntity.ok().build(); }
+	 */
+	@DeleteMapping("/billet/{id}")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+	public MessageResponse deleteBillet(@PathVariable(value = "id") Long idBillet) {
 
-			// partieRepository.deleteById(partieId);
-			pserv.delete(billet);
+		return bserv.delete(idBillet);
 
-			return ResponseEntity.ok().build();
-		}*/
-		@DeleteMapping("/billet/{id}")
-		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-		public MessageResponse deleteBillet(@PathVariable(value = "id") Long idBillet) {
+	}
 
-			return bserv.delete(idBillet);
+	@PutMapping("/billet/{id}")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+	public MessageResponse updateBillet(@PathVariable(value = "id") Long Id,
+			@Validated @RequestBody Billet billetDetails) {
 
-		}
-		
-		@PutMapping("/billet/{id}")
-		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-		public MessageResponse updateBillet(@PathVariable(value = "id") Long Id,
-		                                        @Validated @RequestBody Billet billetDetails) {
+		Billet billet = this.bserv.findById(Id).orElseThrow(null);
 
-			Billet billet = this.bserv.findById(Id).orElseThrow(null);
-		    
-		   
-			billet.setDate(billetDetails.getDate());
-			billet.setPlace(billetDetails.getPlace());
-			billet.setPrix(billetDetails.getPrix());
-		 
-		   
+		billet.setDate(billetDetails.getDate());
+		billet.setPlace(billetDetails.getPlace());
+		billet.setPrix(billetDetails.getPrix());
 
-		    MessageResponse updatedBillet = bserv.saveBillet(billet);
-		    return updatedBillet;
-		
-																							}
+		MessageResponse updatedBillet = bserv.saveBillet(billet);
+		return updatedBillet;
+	}
+
+	@PutMapping("/affecter/{bid}/{uid}")
+	public void affecterBillet(@PathVariable(value = "bid") Long Id, @PathVariable(value = "uid") Long Idu,
+			@Validated User usr) {
+
+		Billet billet = bserv.findById(Id).get();
+		User user = userv.findById(Idu).get();
+		billet.setUser(user);
+		this.bserv.saveBillet(billet);
+
+	}
 
 }

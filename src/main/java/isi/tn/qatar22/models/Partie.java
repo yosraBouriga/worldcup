@@ -24,6 +24,14 @@ public class Partie implements Serializable {
 	private String equipe2;
 	private String date;
 	private String nomStade;
+	private Long qtMaxBillets;
+
+	public Long getQtMaxBillets() {
+		return qtMaxBillets;
+	}
+	public void setQtMaxBillets(Long qtMaxBillets) {
+		this.qtMaxBillets = qtMaxBillets;
+	}
 	@OneToMany (mappedBy="partie")
 	private List<Billet> billets;
 	
@@ -68,13 +76,14 @@ public class Partie implements Serializable {
 	public Partie() {
 		super();
 	}
-	public Partie(Long id, String equipe1, String equipe2, String date, String nomStade) {
+	public Partie(Long id, String equipe1, String equipe2, String date, String nomStade, Long qtMaxBillets) {
 		super();
 		this.idPartie = id;
 		this.equipe1 = equipe1;
 		this.equipe2 = equipe2;
 		this.date = date;
 		this.nomStade = nomStade;
+		this.qtMaxBillets = qtMaxBillets;
 	}
 	
 	
