@@ -90,6 +90,7 @@ public class BilletController {
 	}
 
 	@PutMapping("/affecter/{bid}/{uid}")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public void affecterBillet(@PathVariable(value = "bid") Long Id, @PathVariable(value = "uid") Long Idu,
 			@Validated User usr) {
 
